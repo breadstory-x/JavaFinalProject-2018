@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="925.0" prefWidth="1440.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+   <children>
+      <Button fx:id="menuOpen" mnemonicParsing="false" onAction="#MenuOpenTriggered" text="打开" AnchorPane.bottomAnchor="900.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1380.0" AnchorPane.topAnchor="0.0" />
+      <Button fx:id="menuSave" layoutX="63.0" mnemonicParsing="false" onAction="#MenuSaveTriggered" text="保存" AnchorPane.bottomAnchor="900.0" AnchorPane.leftAnchor="75.0" AnchorPane.rightAnchor="1305.0" AnchorPane.topAnchor="0.0" />
+      <Button fx:id="menuStart" cancelButton="true" layoutX="140.0" mnemonicParsing="false" onAction="#MenuStartTriggered" text="开始" AnchorPane.bottomAnchor="900.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="1230.0" AnchorPane.topAnchor="0.0" />
+      <ImageView fitHeight="900.0" fitWidth="1440.0" pickOnBounds="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+         <image>
+            <Image url="@image/battleField.jpg" />
+         </image>
+      </ImageView>
+      <Pane fx:id="pane" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0" />
+   </children>
+</AnchorPane>
