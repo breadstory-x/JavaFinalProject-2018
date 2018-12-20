@@ -6,6 +6,7 @@ import java.util.Arrays;
 public class Camp<T extends Creature> {
     private ArrayList<Creature>soldiers;
     private T leader;
+    private int number;
     public Camp(T leader)
     {
         this.leader = leader;
@@ -31,5 +32,11 @@ public class Camp<T extends Creature> {
     {
         return leader;
     }
-
+    public void setNumber(int number) {
+        this.number = number;
+    }
+    public int getNumber() {
+        return number;
+    }
+    public void DecNumber(){number--;}
 }

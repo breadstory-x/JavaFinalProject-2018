@@ -43,7 +43,11 @@ public class BattleField {
         positions[x][y].setCreature(creature);
         creature.set(x, y);
         creature.getView().setX(y*80);
-        creature.getView().setY(x*75);
+        creature.getView().setY(x*75+5);
+        creature.getG_rect().setX(y*80);
+        creature.getG_rect().setY(x*75);
+        creature.getR_rect().setX(y*80);
+        creature.getR_rect().setY(x*75);
     }
 }
 

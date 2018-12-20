@@ -26,6 +26,7 @@ public class CalabashBrother extends Creature{
         Image image = new Image(s);
         super.getView().setImage(image);
         super.setCamp(1);
+        super.setDamageValue(40);
     }
     public int getNumber() { return number; }
     @Override

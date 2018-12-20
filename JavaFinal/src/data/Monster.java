@@ -10,6 +10,7 @@ public class Monster extends Creature
         Image image = new Image("/sample/image/小喽啰.png");
         super.getView().setImage(image);
         super.setCamp(2);
+        super.setDamageValue(35);
     }
 
     public String toString() { return "小喽啰"; }

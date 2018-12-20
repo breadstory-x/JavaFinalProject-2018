@@ -10,6 +10,9 @@ public class Scorpion extends Creature
         Image image = new Image("/sample/image/蝎子精.png");
         super.getView().setImage(image);
         super.setCamp(2);
+        super.setDamageValue(50);
+        super.HP = 200;
+        super.maxHP = 200;
     }
 
     @Override
