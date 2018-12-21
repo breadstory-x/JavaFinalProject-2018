@@ -17,8 +17,6 @@ public class Camp<T extends Creature> {
         this.leader = leader;
         soldiers = new ArrayList<>();
         soldiers.addAll(Arrays.asList(creatures));
-        //for(int i = 0;i<num;i++)
-        //    soldiers.add(unit[i]);
     }
     public void addCreatures(Creature creatures)
     {

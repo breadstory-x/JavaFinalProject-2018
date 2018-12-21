@@ -5,8 +5,14 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 
 public class Main extends Application {
 
@@ -17,6 +23,9 @@ public class Main extends Application {
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root, 1440, 925));
         //primaryStage.setResizable(false);
+
+        Controller controller = fxmlLoader.getController();
+        controller.setPrimaryStage(primaryStage);
 
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override

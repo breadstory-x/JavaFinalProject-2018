@@ -18,10 +18,17 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -40,14 +47,21 @@ public class Controller {
     public ArrayList<CalabashBrother> gourds;
 
     public boolean isOnGame;
+    public boolean isOnRecord;
     public ExecutorService GoodCampExecutor;
     public ExecutorService BadCampExecutor;
     public ExecutorService GameControl;
 
+    public Stage primaryStage = new Stage();
+    public HashMap<String, ArrayList<String>> history = new HashMap<>();
+
+    public void setPrimaryStage(Stage primaryStage)
+    {
+        this.primaryStage = primaryStage;
+    }
+
     private void initGame()
     {
-        isOnGame = true;
-        System.out.println("开始游戏！");
         ObservableList list = pane.getChildren();
         list.clear();
         GoodCampExecutor= Executors.newCachedThreadPool();
@@ -102,41 +116,42 @@ public class Controller {
         list.add(scorpion.getG_rect());
         list.add(scorpion.getR_rect());
 
+        //初始化历史记录
+        if(isOnGame) {
+            history = new HashMap<>();
+            history.put(camp1.getLeader().toString(), new ArrayList<>());
+            for (Creature c : camp1.getSoldiers()) {
+                history.put(c.toString(), new ArrayList<>());
+            }
+            history.put(camp2.getLeader().toString(), new ArrayList<>());
+            for (Creature c : camp2.getSoldiers()) {
+                history.put(c.toString(), new ArrayList<>());
+            }
+        }
+    }
 
+    private void ExecuteThread()
+    {
         //执行线程
         for (CalabashBrother cb:gourds) {
             GoodCampExecutor.execute(cb);
         }
-        GoodCampExecutor.execute(grandpa);
+        GoodCampExecutor.execute(camp1.getLeader());
 
         for (Creature temp:camp2.getSoldiers()) {
             BadCampExecutor.execute(temp);
         }
-        BadCampExecutor.execute(snake);
+        BadCampExecutor.execute(camp2.getLeader());
 
         GoodCampExecutor.shutdown();
         BadCampExecutor.shutdown();
-
-        /*GameControl.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    wait();
-                }catch (Exception e) {
-                    e.printStackTrace();
-                }
-                if(camp1.getNumber()==0)
-                    GameOverDisplay(1);
-                else if(camp2.getNumber()==0)
-                    GameOverDisplay(2);
-            }
-        });*/
     }
 
     @FXML
     void initialize()
     {
         isOnGame = false;
+        isOnRecord = false;
         Platform.runLater(new Runnable() {
             public void run() {
                 pane.requestFocus();  //聚焦到pane
@@ -161,23 +176,100 @@ public class Controller {
     }
 
     @FXML private void MenuStartTriggered(){
+        isOnGame = true;
+        System.out.println("开始游戏！");
         initGame();
+        ExecuteThread();
     }
 
     @FXML private void MenuOpenTriggered(){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("information");
-        alert.setHeaderText(null);
-        alert.setContentText("MenuOpenTriggered");
-        alert.showAndWait();
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+        fileChooser.getExtensionFilters().add(extFilter);
+        fileChooser.setTitle("打开存档");
+        File file = fileChooser.showOpenDialog(primaryStage);
+
+        history = new HashMap<>();
+        if(file != null) {
+            try {
+                BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+                String str;
+                while ((str = bufferedReader.readLine()) != null) {
+                    String[] splitArray = str.split(":");
+                    //System.out.println(str);
+                    ArrayList<String> temp = new ArrayList<>(Arrays.asList(splitArray[1].split(" ")));
+                    history.put(splitArray[0],temp);
+                }
+                bufferedReader.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            System.out.println("开始回放！");
+            isOnRecord = true;
+            initGame();
+            ExecuteThread();
+        }
+        else{
+            System.out.println("文件打开失败");
+        }
     }
 
     @FXML private void MenuSaveTriggered(){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+        fileChooser.getExtensionFilters().add(extFilter);
+        fileChooser.setTitle("保存存档");
+        File file = fileChooser.showSaveDialog(primaryStage);
+
+        if(file != null)
+            try{
+                //true表示追加，否则是覆盖写，覆盖写不需要true
+                FileWriter fileWriter = new FileWriter(file,true);
+
+                fileWriter.write(camp1.getLeader().toString()+":");
+                for (String s:camp1.getLeader().getHistory()) {
+                    fileWriter.write(s+" ");
+                }
+                fileWriter.write("\n");
+                for (Creature c : camp1.getSoldiers()) {
+                    fileWriter.write(c.toString()+":");
+                    for (String s:c.getHistory()) {
+                        fileWriter.write(s+" ");
+                    }
+                    fileWriter.write("\n");
+                }
+                fileWriter.write(camp2.getLeader().toString()+":");
+                for (String s:camp2.getLeader().getHistory()) {
+                    fileWriter.write(s+" ");
+                }
+                fileWriter.write("\n");
+                for (Creature c : camp2.getSoldiers()) {
+                    fileWriter.write(c.toString()+":");
+                    for (String s:c.getHistory()) {
+                        fileWriter.write(s+" ");
+                    }
+                    fileWriter.write("\n");
+                }
+                /*for(HashMap.Entry<String,ArrayList<String>> m:history.entrySet())
+                {
+                    //fileWriter.write(m.getKey()+":"+m.getValue()+"\n");
+                    fileWriter.write(m.getKey()+":");
+                    for (String s:m.getValue()) {
+                        fileWriter.write(s+" ");
+                    }
+                    fileWriter.write("\n");
+                }*/
+                fileWriter.close();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+        /*Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("information");
         alert.setHeaderText(null);
         alert.setContentText("MenuSaveTriggered");
-        alert.showAndWait();
+        alert.showAndWait();*/
     }
 
 
@@ -188,7 +280,7 @@ public class Controller {
             public void run() {
                 synchronized (creature) {
                     Timeline timeline = new Timeline();
-                    timeline.getKeyFrames().addAll(new KeyFrame(Duration.millis(400),new KeyValue(creature.getView().xProperty(), 80*y)),
+                    timeline.getKeyFrames().addAll(new KeyFrame(Duration.millis(350),new KeyValue(creature.getView().xProperty(), 80*y)),
                             new KeyFrame(Duration.millis(400),new KeyValue(creature.getView().yProperty(), 75*x+5)),
                             new KeyFrame(Duration.millis(400),new KeyValue(creature.getR_rect().xProperty(), y*80+80*creature.HP/creature.maxHP)),
                             new KeyFrame(Duration.millis(400),new KeyValue(creature.getR_rect().yProperty(), 75*x)),
@@ -266,11 +358,11 @@ public class Controller {
                 ft2.setToValue(1.0);
                 ft2.play();
 
-                synchronized (creature) {
+                //synchronized (creature) {
                     creature.getG_rect().setWidth(80.0 * creature.HP / creature.maxHP);
                     creature.getR_rect().setX(creature.getY() * 80 + 80.0 * creature.HP / creature.maxHP);
                     creature.getR_rect().setWidth(80.0 - 80.0 * creature.HP / creature.maxHP);
-                }
+                //}
             }
         });
     }
@@ -305,11 +397,11 @@ public class Controller {
             for (Creature c : camp2.getSoldiers()) {
                 c.setStatus(Creature.Status.DEAD);
             }
-            Text t = new Text(600,50,"妖怪胜利");
+            /*Text t = new Text(600,50,"妖怪胜利");
             t.setFont(Font.font("黑体",50));
             t.setFill(Color.RED);
-            pane.getChildren().add(t);
-
+            pane.getChildren().add(t);*/
+            System.out.println("妖怪胜利");
             /*FadeTransition ft = new FadeTransition(Duration.millis(500), t);
             ft.setFromValue(0.0);
             ft.setToValue(1.0);
@@ -322,11 +414,11 @@ public class Controller {
             for (Creature c:camp1.getSoldiers()) {
                 c.setStatus(Creature.Status.DEAD);
             }
-            Text t = new Text(600,50,"葫芦娃胜利");
+            /*Text t = new Text(600,50,"葫芦娃胜利");
             t.setFont(Font.font("黑体",50));
             t.setFill(Color.RED);
-            pane.getChildren().add(t);
-
+            pane.getChildren().add(t);*/
+            System.out.println("葫芦娃胜利");
             /*FadeTransition ft = new FadeTransition(Duration.millis(500), t);
             ft.setFromValue(0.0);
             ft.setToValue(1.0);
