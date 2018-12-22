@@ -10,11 +10,10 @@ public class Scorpion extends Creature
     public Scorpion(BattleField field, Controller controller){
         super(field,controller);
         Image image = new Image("/sample/image/蝎子精.png");
-        super.getView().setImage(image);
-        super.setCamp(2);
-        super.setDamageValue(100);
-        //super.HP = 200;
-        //super.maxHP = 200;
+        getView().setImage(image);
+        setCamp(2);
+        damageValue = 100;
+        deadProbability = 0.3;
         if(controller.isOnRecord)
         {
             //System.out.println(this+":"+controller.history.get(this.toString()));

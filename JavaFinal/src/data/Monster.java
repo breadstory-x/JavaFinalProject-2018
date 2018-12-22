@@ -7,14 +7,15 @@ import java.util.ArrayList;
 
 public class Monster extends Creature
 {
-    static int num = 0;
+    public static int num = 0;
     private String name;
     public Monster(BattleField field, Controller controller){
         super(field,controller);
         Image image = new Image("/sample/image/小喽啰.png");
-        super.getView().setImage(image);
-        super.setCamp(2);
-        super.setDamageValue(100);
+        getView().setImage(image);
+        setCamp(2);
+        damageValue = 100;
+        deadProbability = 0.55;
         name = "小喽啰"+String.valueOf(num);
         num++;
         if(controller.isOnRecord)

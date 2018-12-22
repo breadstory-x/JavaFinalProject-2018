@@ -36,6 +36,7 @@ abstract public class Creature implements Runnable,FundamentalBattle{
     public int HP;
     public int maxHP;
     protected int damageValue;
+    protected double deadProbability;
     protected int paveNum;
 
     protected ArrayList<String>history = new ArrayList<>();
@@ -71,10 +72,6 @@ abstract public class Creature implements Runnable,FundamentalBattle{
         this.y = y;
     }
     public void setStatus(Status x){status = x;}
-    public Status getStatus(){return status;}
-    public void setBattleStatus(BattleStatus battleStatus) {
-        this.battleStatus = battleStatus;
-    }
     public BattleStatus getBattleStatus() {
         return battleStatus;
     }
@@ -86,15 +83,9 @@ abstract public class Creature implements Runnable,FundamentalBattle{
     public ImageView getView(){return view;}
     public Rectangle getG_rect() { return g_rect; }
     public Rectangle getR_rect() { return r_rect; }
-    public int getDamageValue() {
-        return damageValue;
-    }
-    public void setDamageValue(int damageValue) {
-        this.damageValue = damageValue;
-    }
-    public ArrayList<String> getHistory() {
-        return history;
-    }
+    //public ArrayList<String> getHistory() {
+    //    return history;
+    //}
 
     public void run () {
         while (status != Status.DEAD) {
@@ -106,6 +97,8 @@ abstract public class Creature implements Runnable,FundamentalBattle{
                 }
                 if (status == Status.DEAD)
                     break;
+                if(battleStatus == BattleStatus.BE_ATTECKED)
+                    battleStatus = BattleStatus.OTHER;
                 OnMoveTo();
                 try {
                     Thread.sleep(550);
@@ -115,31 +108,42 @@ abstract public class Creature implements Runnable,FundamentalBattle{
                 OnExecute();
             }
             else if(controller.isOnRecord){
+                //移动判定回合
                 try {
                     Thread.sleep(550);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 String s = history.get(paveNum);
-                paveNum++;
                 if(s.equals("M"))
+                {
+                    paveNum++;
                     OnRecordMoveTo();
-                else
-                    paveNum--;
-
+                }
                 if(paveNum >= history.size())
                     break;
+
+                //操作判定回合
                 try {
                     Thread.sleep(550);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 s = history.get(paveNum);
-                paveNum++;
                 if(s.equals("A"))
+                {
+                    paveNum++;
                     OnRecordExecute();
-                else
-                    paveNum--;
+                }
+                else if(s.equals("D"))
+                {
+                    //int i = 1;
+                    //while(history.get(paveNum+i).equals("D"))
+                    //    i++;
+                    //paveNum+=i;
+                    paveNum++;
+                    controller.DefendDisplay(this);
+                }
                 if(paveNum >= history.size())
                     break;
             }
@@ -190,9 +194,7 @@ abstract public class Creature implements Runnable,FundamentalBattle{
                                 && !field.getPositions()[i][j].isEmpty()
                                 && (field.getPositions()[i][j].getCreature().getCamp() != camp)) {
                             synchronized (field.getPositions()[i][j].getCreature()) {
-                                if (field.getPositions()[i][j].getCreature().HP > 0) {
-                                    field.getPositions()[i][j].getCreature().getHistory().add("A");
-                                    field.getPositions()[i][j].getCreature().getHistory().add(String.valueOf(this.damageValue));
+                                if (field.getPositions()[i][j].getCreature().HP > 0 && field.getPositions()[i][j].getCreature().getBattleStatus()!= BattleStatus.BE_ATTECKED) {
                                     field.getPositions()[i][j].getCreature().beAttacked(damageValue);
                                     state = false;
                                 }
@@ -201,7 +203,7 @@ abstract public class Creature implements Runnable,FundamentalBattle{
                 }
         }
     }
-    //回放移动
+    //回放移动回合
     public void OnRecordMoveTo()
     {
         int x = Integer.parseInt(history.get(paveNum));
@@ -215,7 +217,7 @@ abstract public class Creature implements Runnable,FundamentalBattle{
         this.set(x, y);
         controller.moveToDisplay(this, x, y);
     }
-    //回放操作
+    //回放操作回合
     public void OnRecordExecute()
     {
         int x = Integer.parseInt(history.get(paveNum));
@@ -227,13 +229,9 @@ abstract public class Creature implements Runnable,FundamentalBattle{
             setStatus(Creature.Status.DEAD);
             controller.DeadDisplay(this);//播放死亡动画
         }
-        //在一回合内被同时攻击多次
-        /*if(paveNum< history.size() && history.get(paveNum).equals("A")){
-            paveNum ++;
-            OnRecordExecute();
-        }*/
     }
 
+    //移动
     public void moveTo(int x, int y)
     {
         synchronized (field) {
@@ -258,27 +256,54 @@ abstract public class Creature implements Runnable,FundamentalBattle{
             controller.moveToDisplay(this, x, y);
         }
     }
+    //被攻击
     public synchronized void beAttacked(int dv)
     {
-            HP -= damageValue;
-            if (HP < 0)
-                HP = 0;
-            controller.beAttackedDisplay(this);//播放受击动画
-            if (HP == 0) {
-                field.getPositions()[getX()][getY()].setCreature(null);
-                setStatus(Creature.Status.DEAD);
-                controller.DeadDisplay(this);//播放死亡动画
-                System.out.println(this  + "  已死亡");
+        battleStatus = BattleStatus.BE_ATTECKED;
+        if(isNearLeader())
+        {
+            history.add("D");
+            controller.DefendDisplay(this);
+            return;
+        }
+        int hurt_point = 0;
+        if(Math.random()<deadProbability) {
+            hurt_point = dv;
+        }
+        history.add("A");
+        history.add(String.valueOf(hurt_point));
+        HP -= hurt_point;
+        controller.beAttackedDisplay(this);//播放受击动画
+        if (HP == 0) {
+            field.getPositions()[getX()][getY()].setCreature(null);
+            setStatus(Creature.Status.DEAD);
+            controller.DeadDisplay(this);//播放死亡动画
+            System.out.println(this  + "  已死亡");
 
-                //游戏结束判定
-                if (getCamp() == 1)
-                    controller.camp1.DecNumber();
-                else if (getCamp() == 2)
-                    controller.camp2.DecNumber();
-                if (controller.camp1.getNumber() == 0)
-                    controller.GameOverDisplay(1);
-                else if (controller.camp2.getNumber() == 0)
-                    controller.GameOverDisplay(2);
-            }
+            //游戏结束判定
+            if (getCamp() == 1)
+                controller.camp1.DecNumber();
+            else if (getCamp() == 2)
+                controller.camp2.DecNumber();
+            if (controller.camp1.getNumber() == 0)
+                controller.GameOverDisplay(1);
+            else if (controller.camp2.getNumber() == 0)
+                controller.GameOverDisplay(2);
+        }
+    }
+
+    public boolean isNearLeader() {
+        if(this.toString().equals("爷爷")|| this.toString().equals("蛇精"))
+            return false;
+        for (int i = x - 1; i <= x + 1; i++)
+            for (int j = y - 1; j <= y + 1; j++)
+                if ((i >= 0) && (j >= 0) && (i < field.getRow()) && (j < field.getCol())
+                        && !field.getPositions()[i][j].isEmpty()) {
+                    if (camp == 1 && field.getPositions()[i][j].getCreature().toString().equals("爷爷"))
+                        return true;
+                    if (camp == 2 && field.getPositions()[i][j].getCreature().toString().equals("蛇精"))
+                        return true;
+                }
+        return false;
     }
 }

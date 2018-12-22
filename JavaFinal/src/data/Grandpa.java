@@ -10,15 +10,15 @@ public class Grandpa extends Creature //implements Leader
     public Grandpa(BattleField field, Controller controller){
         super(field,controller);
         Image image = new Image("/sample/image/爷爷.png");
-        super.getView().setImage(image);
-        super.setCamp(1);
-        super.setDamageValue(100);
+        getView().setImage(image);
+        setCamp(1);
+        damageValue = 100;
+        deadProbability = 0.3;
         if(controller.isOnRecord)
         {
             //System.out.println(this+":"+controller.history.get(this.toString()));
             history = new ArrayList<>(controller.history.get(this.toString()));
         }
-
     }
 
     @Override

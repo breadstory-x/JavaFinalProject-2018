@@ -26,9 +26,10 @@ public class CalabashBrother extends Creature{
             case "七娃": s = "/sample/image/rwjs7_01_1.png";break;
         }
         Image image = new Image(s);
-        super.getView().setImage(image);
-        super.setCamp(1);
-        super.setDamageValue(100);
+        getView().setImage(image);
+        setCamp(1);
+        damageValue = 100;
+        deadProbability = 0.4;
         if(controller.isOnRecord)
         {
             //System.out.println(this+":"+controller.history.get(this.toString()));

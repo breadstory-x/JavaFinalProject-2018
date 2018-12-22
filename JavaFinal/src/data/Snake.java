@@ -10,9 +10,10 @@ public class Snake extends Creature
     public Snake(BattleField field, Controller controller){
         super(field,controller);
         Image image = new Image("/sample/image/蛇精.png");
-        super.getView().setImage(image);
-        super.setCamp(2);
-        super.setDamageValue(100);
+        getView().setImage(image);
+        setCamp(2);
+        damageValue = 100;
+        deadProbability = 0.4;
         if(controller.isOnRecord)
         {
             //System.out.println(this+":"+controller.history.get(this.toString()));

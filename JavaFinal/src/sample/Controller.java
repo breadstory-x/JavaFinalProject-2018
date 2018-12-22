@@ -66,7 +66,7 @@ public class Controller {
         list.clear();
         GoodCampExecutor= Executors.newCachedThreadPool();
         BadCampExecutor= Executors.newCachedThreadPool();
-        GameControl = Executors.newSingleThreadExecutor();
+        //GameControl = Executors.newSingleThreadExecutor();
         //创建对象
         gourds = new ArrayList<>();
         CalabashBrother[] cbs = {new CalabashBrother(field, this, 1, "大娃", "红色"),
@@ -84,6 +84,7 @@ public class Controller {
         camp2 = new Camp<>(snake);
         Scorpion scorpion = new Scorpion(field, this);
         camp2.addCreatures(scorpion);
+        Monster.num = 0;
         for(int i = 0; i<7;i++) {
             Monster temp = new Monster(field, this);
             camp2.addCreatures(temp);
@@ -117,7 +118,7 @@ public class Controller {
         list.add(scorpion.getR_rect());
 
         //初始化历史记录
-        if(isOnGame) {
+        /*if(isOnGame) {
             history = new HashMap<>();
             history.put(camp1.getLeader().toString(), new ArrayList<>());
             for (Creature c : camp1.getSoldiers()) {
@@ -127,7 +128,7 @@ public class Controller {
             for (Creature c : camp2.getSoldiers()) {
                 history.put(c.toString(), new ArrayList<>());
             }
-        }
+        }*/
     }
 
     private void ExecuteThread()
@@ -366,6 +367,20 @@ public class Controller {
             }
         });
     }
+
+    public void DefendDisplay(Creature creature)
+    {
+        FadeTransition ft = new FadeTransition(Duration.millis(200), creature.getView());
+        ft.setFromValue(1.0);
+        ft.setToValue(0.5);
+        ft.play();
+
+        FadeTransition ft2 = new FadeTransition(Duration.millis(200), creature.getView());
+        ft2.setFromValue(0.5);
+        ft2.setToValue(1.0);
+        ft2.play();
+    }
+
     public synchronized void DeadDisplay(Creature creature){
         Platform.runLater(new Runnable() {
             @Override
