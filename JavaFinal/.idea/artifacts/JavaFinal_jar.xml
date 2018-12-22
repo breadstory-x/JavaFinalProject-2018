@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact name="JavaFinal:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/JavaFinal_jar</output-path>
+    <root id="root">
+      <element id="archive" name="JavaFinal.jar">
+        <element id="module-output" name="JavaFinal" />
+      </element>
+    </root>
+  </artifact>
+</component>
