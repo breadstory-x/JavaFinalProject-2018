@@ -1,7 +1,5 @@
 # 葫芦娃大战妖精
 
-## 效果展示
-![1](readme_picture/victory_full.gif)<!-- .element width="80%" height="65%" -->
 ## 项目简介
 本项目为葫芦娃大战妖精——决一死战，葫芦娃阵营与妖精阵营分居两侧，通过不断移动、攻击，直到完全消灭一方
 
@@ -136,3 +134,6 @@ public @interface AuthorInfo {
 BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
 BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file,true));
 ```
+
+## 效果展示
+![1](readme_picture/victory_full.gif)<!-- .element width="80%" height="65%" -->
