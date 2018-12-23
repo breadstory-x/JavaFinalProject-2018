@@ -16,10 +16,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -191,10 +188,11 @@ public class Controller {
         history = new HashMap<>();
         if(file != null) {
             try {
-                BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "gbk"));
                 String str;
                 while ((str = bufferedReader.readLine()) != null) {
                     String[] splitArray = str.split(":");
+                    System.out.println(str);
                     ArrayList<String> temp = new ArrayList<>(Arrays.asList(splitArray[1].split(" ")));
                     history.put(splitArray[0],temp);
                 }
@@ -223,33 +221,33 @@ public class Controller {
         if(file != null)
             try{
                 //true表示追加，否则是覆盖写，覆盖写不需要true
-                FileWriter fileWriter = new FileWriter(file,true);
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "gbk"));
 
-                fileWriter.write(camp1.getLeader().toString()+":");
+                bufferedWriter.write(camp1.getLeader().toString()+":");
                 for (String s:camp1.getLeader().getHistory()) {
-                    fileWriter.write(s+" ");
+                    bufferedWriter.write(s+" ");
                 }
-                fileWriter.write("\n");
+                bufferedWriter.write("\n");
                 for (Creature c : camp1.getSoldiers()) {
-                    fileWriter.write(c.toString()+":");
+                    bufferedWriter.write(c.toString()+":");
                     for (String s:c.getHistory()) {
-                        fileWriter.write(s+" ");
+                        bufferedWriter.write(s+" ");
                     }
-                    fileWriter.write("\n");
+                    bufferedWriter.write("\n");
                 }
-                fileWriter.write(camp2.getLeader().toString()+":");
+                bufferedWriter.write(camp2.getLeader().toString()+":");
                 for (String s:camp2.getLeader().getHistory()) {
-                    fileWriter.write(s+" ");
+                    bufferedWriter.write(s+" ");
                 }
-                fileWriter.write("\n");
+                bufferedWriter.write("\n");
                 for (Creature c : camp2.getSoldiers()) {
-                    fileWriter.write(c.toString()+":");
+                    bufferedWriter.write(c.toString()+":");
                     for (String s:c.getHistory()) {
-                        fileWriter.write(s+" ");
+                        bufferedWriter.write(s+" ");
                     }
-                    fileWriter.write("\n");
+                    bufferedWriter.write("\n");
                 }
-                fileWriter.close();
+                bufferedWriter.close();
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -386,7 +384,7 @@ public class Controller {
             }
             System.out.println("妖怪胜利");
             try {
-                Thread.sleep(500);
+                Thread.sleep(1000);
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -404,7 +402,7 @@ public class Controller {
             }
             System.out.println("葫芦娃胜利");
             try {
-                Thread.sleep(500);
+                Thread.sleep(1000);
             }catch (Exception e){
                 e.printStackTrace();
             }

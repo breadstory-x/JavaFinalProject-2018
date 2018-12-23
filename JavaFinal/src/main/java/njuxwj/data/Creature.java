@@ -116,6 +116,8 @@ abstract public class Creature implements Runnable,FundamentalBattle{
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                if (status == Status.DEAD)
+                    break;
                 OnExecute();
             }
             else if(controller.isOnRecord){
@@ -161,6 +163,7 @@ abstract public class Creature implements Runnable,FundamentalBattle{
         }
         System.out.println(this + " 已退出");
     }
+
 
     //移动回合
     public void OnMoveTo()
@@ -234,11 +237,13 @@ abstract public class Creature implements Runnable,FundamentalBattle{
         int x = Integer.parseInt(history.get(paveNum));
         paveNum ++;
         HP -= x;
+        if(HP<0)
+            HP = 0;
         if(x != 0)
             controller.beAttackedDisplay(this);
         else
             controller.failBeAttackedDisplay(this);
-        if (HP == 0) {
+        if (HP <= 0) {
             field.getPositions()[this.x][this.y].setCreature(null);
             setStatus(Creature.Status.DEAD);
             controller.DeadDisplay(this);//播放死亡动画
@@ -301,12 +306,14 @@ abstract public class Creature implements Runnable,FundamentalBattle{
         {
             hurt_point = dv;
             HP -= hurt_point;
+            if(HP<0)
+                HP = 0;
             controller.beAttackedDisplay(this);//播放受击动画
         }
         history.add("A");
         history.add(String.valueOf(hurt_point));
 
-        if (HP == 0) {
+        if (HP <= 0) {
             field.getPositions()[getX()][getY()].setCreature(null);
             setStatus(Creature.Status.DEAD);
             controller.DeadDisplay(this);//播放死亡动画

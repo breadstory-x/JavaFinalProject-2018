@@ -1,0 +1,17 @@
+爷爷:M 1 3 M 1 4 M 2 4 M 2 5 M 3 5 M 3 5 M 4 5 M 4 6 M 5 6 A 0 M 6 6 M 7 6 A 0 M 6 6 M 7 6 A 0 M 7 7 M 7 7 A 0 M 7 8 A 0 M 7 8 A 0 M 7 7 M 8 7 M 8 8 M 8 9 M 8 8 M 7 8 M 7 7 M 7 7 M 8 7 
+大娃:M 3 4 M 4 4 M 5 4 M 5 4 M 5 5 M 6 5 M 6 5 M 6 5 M 5 5 M 6 5 M 6 5 M 6 5 M 6 5 M 6 5 M 5 5 M 6 5 M 6 5 M 6 6 M 6 7 A 0 M 7 7 D M 6 7 M 5 7 M 6 7 D M 6 7 M 6 7 M 6 8 
+二娃:M 4 3 M 4 3 M 4 4 M 4 5 M 4 5 M 5 5 M 5 6 D M 5 7 D M 5 8 A 100 
+三娃:M 5 3 M 6 3 M 6 3 M 6 3 M 6 3 M 6 3 M 7 3 M 6 3 M 7 3 M 6 3 M 5 3 M 5 4 M 6 4 M 6 4 M 7 4 M 8 4 M 8 5 M 8 6 M 8 6 M 8 7 M 7 7 M 8 7 M 8 8 M 7 8 M 6 8 D M 5 8 
+四娃:M 6 3 M 7 3 M 7 3 M 7 3 M 7 4 M 8 4 M 8 5 M 8 6 A 100 
+五娃:M 8 3 M 8 3 M 8 3 M 8 3 M 7 3 M 7 3 M 7 4 M 7 4 M 7 4 M 7 4 M 7 5 M 7 5 M 7 5 M 8 5 M 8 6 M 7 6 M 8 6 M 8 7 M 8 8 M 8 9 M 8 10 M 7 10 A 0 M 8 10 M 8 9 M 8 10 M 7 10 A 0 
+六娃:M 8 4 M 7 4 M 6 4 M 6 4 M 6 4 M 7 4 M 8 4 M 8 4 M 8 4 M 8 4 M 8 5 M 8 6 M 8 6 M 7 6 D M 6 6 D M 5 6 A 0 M 6 6 M 5 6 M 5 7 A 0 M 5 8 M 6 8 A 100 
+七娃:M 9 4 M 9 4 M 8 4 M 8 5 M 7 5 M 7 5 M 7 5 M 8 5 M 7 5 M 7 6 D M 7 7 D M 7 8 A 100 
+蛇精:M 9 10 M 8 10 M 8 9 M 8 10 M 8 10 M 8 9 M 8 9 M 8 9 M 8 9 M 8 10 M 8 9 M 7 9 M 7 9 M 8 9 M 8 9 M 7 9 M 7 9 M 7 9 M 7 8 A 0 M 7 8 A 0 M 7 9 A 0 M 6 9 A 0 M 6 8 A 100 
+蝎子精:M 8 6 M 8 7 M 8 8 M 8 8 M 8 9 M 8 8 M 8 8 M 8 7 M 7 7 M 8 7 A 0 M 8 7 M 8 8 M 8 7 A 100 
+小喽啰0:M 7 7 M 6 7 M 7 7 M 7 7 M 7 7 M 7 8 M 7 8 M 7 7 A 100 
+小喽啰1:M 7 9 M 6 9 M 5 9 M 5 8 M 5 8 M 5 7 M 6 7 A 0 M 6 7 M 6 7 A 0 M 6 8 M 6 7 A 0 M 6 8 D M 6 7 A 0 M 6 7 A 0 M 6 8 A 100 
+小喽啰2:M 6 8 M 6 8 M 7 8 M 7 8 M 6 8 M 6 8 M 6 8 M 7 8 M 6 8 M 5 8 M 5 7 M 5 8 M 5 8 M 5 7 M 5 7 A 0 M 6 7 A 0 M 6 8 D M 5 8 M 5 8 A 100 
+小喽啰3:M 6 10 M 5 10 M 5 10 M 5 9 M 6 9 M 7 9 M 7 9 M 6 9 M 7 9 M 7 8 M 6 8 A 100 
+小喽啰4:M 5 11 M 6 11 M 6 10 M 6 10 M 7 10 M 7 10 M 8 10 M 8 10 M 8 10 M 7 10 M 6 10 M 7 10 M 7 10 M 8 10 M 8 10 M 8 9 M 8 9 M 8 10 M 7 10 M 6 10 M 5 10 M 5 9 M 5 10 M 5 9 M 6 9 A 0 M 6 10 A 100 
+小喽啰5:M 3 11 M 3 10 M 4 10 M 4 9 M 4 10 M 5 10 M 5 9 M 5 8 A 100 
+小喽啰6:M 2 12 M 2 11 M 3 11 M 4 11 M 5 11 M 6 11 M 5 11 M 5 10 M 5 9 A 100 
