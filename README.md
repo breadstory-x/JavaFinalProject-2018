@@ -3,6 +3,14 @@
 ## 项目简介
 本项目为葫芦娃大战妖精——决一死战，葫芦娃阵营与妖精阵营分居两侧，通过不断移动、攻击，直到完全消灭一方
 
+## 运行说明
+1. 可直接双击JavaFinal.jar运行
+2. 若使用mvn clean test package命令生成的jar文件，需用压缩包软件打开，在META-INF/MANIFEST.MF文件末尾添加一行
+```
+Main-Class: njuxwj.sample.Main
+```
+保存后方可运行此jar包
+
 ## 设计思路
 ### 类简介
 ![2](readme_picture/class.PNG)<!-- .element width="80%" height="65%" -->
